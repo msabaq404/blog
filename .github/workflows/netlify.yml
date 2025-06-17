@@ -1,0 +1,43 @@
+name: Deploy Netlify Functions
+
+on:
+    workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Netlify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: ./comment-api
+        run: npm install
+
+      - name: Setup
+        run: node setup.js
+        env:
+            TOKEN: ${{ secrets.SANITY_TOKEN }}
+            PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+
+
+    #   - name: Install Netlify CLI
+    #     run: npm install -g netlify-cli
+
+      - name: Deploy functions to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        working-directory: ./comment-api
+        run: |
+          npx netlify deploy \
+            --site=$NETLIFY_SITE_ID \
+            --auth=$NETLIFY_AUTH_TOKEN \
+            --prod
