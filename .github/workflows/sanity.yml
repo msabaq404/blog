@@ -1,0 +1,33 @@
+name: Deploy Sanity Studio (on demand)
+
+on:
+    workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+        HOST: ${{ secrets.HOST }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Setup
+        run: node setup.js
+        env:
+            TOKEN: ${{ secrets.SANITY_TOKEN }}
+            PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+    
+      - name: Install dependencies
+        working-directory: ./sanity
+        run: npm install
+
+      - name: Deploy Sanity Studio
+        working-directory: ./sanity
+        env:
+            SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        run: npx sanity deploy
