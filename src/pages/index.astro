@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.svelte";
+import Hero from "../components/Hero.svelte";
+import Main from "../components/Main.svelte";
+
+import { sanityClient } from "sanity:client";
+
+import { popularPosts, partialPostSubQuery, categories } from "../utils/api";
+
+const posts = await sanityClient.fetch(`
+  *[_type == "post" && defined(slug)] | order(publishedAt desc){
+   ${partialPostSubQuery}
+  }[0..7]
+`);
+
+const totalPosts = await sanityClient.fetch(`
+  count(*[_type == "post" && defined(slug)])
+`);
+---
+
+<Layout>
+  <div class="wrapper">
+    <Header client:load />
+    <Hero client:load />
+    <Main {posts} {popularPosts} {categories} {totalPosts} client:load />
+  </div>
+</Layout>

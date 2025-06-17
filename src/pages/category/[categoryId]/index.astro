@@ -1,0 +1,40 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@mycomponents/Header.svelte";
+import Hero from "@mycomponents/Hero.svelte";
+import Main from "@mycomponents/Main.svelte";
+
+import { sanityClient } from "sanity:client";
+
+import { popularPosts, partialPostSubQuery, categories } from "@utils/api";
+
+const { categoryId }: { categoryId: string } = Astro.params;
+
+
+const posts = await sanityClient.fetch(`
+  *[_type == "post" && "${categoryId}" in categories[]->slug.current] | order(publishedAt desc){
+    ${partialPostSubQuery}
+  }[0..7]
+`);
+
+const totalPosts = await sanityClient.fetch(`
+  count(*[_type == "post" && "${categoryId}" in categories[]->slug.current])
+`);
+
+console.log(totalPosts);
+
+export async function getStaticPaths() {
+  const categories = await sanityClient.fetch(`*[_type == "category"]{"slug": slug.current}`);
+  return categories.map((category: {slug: string}) => ({
+    params: { categoryId: category.slug },
+  }));
+};
+---
+
+<Layout>
+  <div class="wrapper">
+    <Header client:load />
+    <Hero client:load />
+    <Main {posts} {popularPosts} currCategory={categoryId} {totalPosts} {categories} client:load />
+  </div>
+</Layout>

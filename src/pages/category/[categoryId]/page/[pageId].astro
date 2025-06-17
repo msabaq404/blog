@@ -1,0 +1,49 @@
+---
+import { sanityClient } from 'sanity:client';
+import { categories, partialPostSubQuery, popularPosts } from "@utils/api";
+import Layout from '@layouts/Layout.astro';
+import Header from '@mycomponents/Header.svelte';
+import Hero from '@mycomponents/Hero.svelte';
+import Main from '@mycomponents/Main.svelte';
+
+
+const { categoryId, pageId }: {categoryId : string, pageId: number}= Astro.params;
+
+let postRange = [(pageId - 1) * 8, pageId * 8 - 1];
+
+const posts = await sanityClient.fetch(`
+  *[_type == "post" && "${categoryId}" in categories[]->slug.current] | order(publishedAt desc){
+    ${partialPostSubQuery}
+  }[${postRange[0]}..${postRange[1]}]
+`);
+
+const totalPosts = await sanityClient.fetch(`
+  count(*[_type == "post" && "${categoryId}" in categories[]->slug.current])
+`);
+
+export async function getStaticPaths() {
+ const categories = await sanityClient.fetch(`*[_type == "category"]{"slug": slug.current}`);
+ let pages = [];
+
+ for (const category of categories) {
+     const numberOfPosts = await sanityClient.fetch(`count(*[_type == "post" && "${category.slug}" in categories[]->slug.current])`);
+     const totalPages = Math.ceil(numberOfPosts / 8); 
+     pages.push(totalPages);
+    }
+    console.log(categories, pages);
+
+    return categories.flatMap((category: {slug: string}, index: number) => {
+    return Array.from({ length: pages[index] }, (_, i) => ({
+        params: { categoryId: category.slug, pageId: (i + 1).toString() },
+    }));
+    }); 
+}   
+---
+
+<Layout>
+  <div class="wrapper">
+    <Header client:load />
+    <Hero client:load />
+    <Main {posts} {popularPosts} currCategory={categoryId} currPage={pageId} {totalPosts} {categories} client:load />
+  </div>
+</Layout>

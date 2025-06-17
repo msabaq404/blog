@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme{
+    --color-primary: #223D4A;
+    --color-background: #F9F5F2;
+    --color-dark-background: rgb(0,31,82);
+    --font-playfair: 'Playfair Display', serif;
+}
+
+@custom-variant dark (&:is(html[data-theme="dark"] *)) {}
