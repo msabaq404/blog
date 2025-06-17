@@ -1,0 +1,43 @@
+# .github/workflows/deploy.yml
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup
+        run: node setup.js
+        env:
+            TOKEN: ${{ secrets.SANITY_TOKEN }}
+            PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+
+      - name: Update Comment API URL
+        run: echo 'export default "$COMMENT_URL"'  > './src/utils/comment-api-url.ts'
+        env:
+            COMMENT_URL: ${{ secrets.COMMENT_URL }}
+
+      - name: Build Pages
+        run: npm run build
+
+      - name: Create no jekyll file
+        run: echo > dist/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: pages       
+          folder: dist       
