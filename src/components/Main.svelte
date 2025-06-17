@@ -254,9 +254,9 @@
 
   <Aside
     className={(sliderOpen
-      ? "w-[calc(100%-5.5rem)] shrink-0 translate-x-[-100%]"
+      ? "translate-x-[-100%]"
       : "") +
-      " flex md:hidden ml-[-1rem] transition-all duration-300 ease-in-out"}
+      " flex md:hidden ml-[-1rem] w-[calc(100%-5.5rem)]  shrink-0  transition-all duration-300 ease-in-out"}
     {popularPosts}
   />
 </div>
