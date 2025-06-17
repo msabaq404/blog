@@ -182,7 +182,7 @@
 
 <div id="posts"  class="max-w-screen flex overflow-x-clip px-4 py-3">
   <section
-    class="grid shrink-0 w-full grid-cols-[minmax(0,1fr)_5.5rem] md:grid-cols-[minmax(0,2fr)_1fr] md:gap-4 max-w-6xl mx-auto
+    class="grid shrink-0 w-full grid-cols-[minmax(0,1fr)_4rem] md:grid-cols-[minmax(0,2fr)_1fr] md:gap-4 max-w-6xl mx-auto
     transition-all duration-300"
   >
     <main
@@ -237,7 +237,7 @@
     >
       <svg
         class:rotate-180={!sliderOpen}
-        class="size-14 bg-gray-300/40 transition-all ease-in duration-200 rounded-full p-2 shadow-sm"
+        class="size-10 bg-gray-300/40 transition-all ease-in duration-200 rounded-full p-2 shadow-sm"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -256,7 +256,7 @@
     className={(sliderOpen
       ? "translate-x-[-100%]"
       : "") +
-      " flex md:hidden ml-[-1rem] w-[calc(100%-5.5rem)]  shrink-0  transition-all duration-300 ease-in-out"}
+      " flex md:hidden ml-[-1rem] w-[calc(100%-4rem)]  shrink-0  transition-all duration-300 ease-in-out"}
     {popularPosts}
   />
 </div>
