@@ -30,7 +30,7 @@ export async function handler(event) {
     return {
       statusCode: 200,
       headers:{
-        "Access-Control-Allow-Origin": "http://localhost:4321",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ success: true, id: newComment._id }),
     };
