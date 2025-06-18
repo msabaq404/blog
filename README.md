@@ -24,6 +24,7 @@ Click the "Fork" button at the top right of this repository
    - Scroll down to the Tokens section
    - Click on 'Add Token' and give it any name and select the "Deploy Studio" permission, and then copy the token. This will be your **`SANITY_AUTH_TOKEN`**
    - Now, create another token. But this time, choose the editor permission and the name doesnt matter so you can type anything in the name field. This will be your **`SANITY_TOKEN`**
+   - While you are in the API section, add this url (https://YOUR_GITHUB_USERNAME.github.io) to `CORS orgins`.
 
 ### Step 3: Set up Sanity Studio (Content Dashboard)
 Sanity Studio is the Content Dashboard which you will use to write and publish your blogs. It can be accessed at https://your-desired-name.sanity.studio. The name will be chosen by you but it should be available.
