@@ -12,5 +12,8 @@
   "type": "module",
   "dependencies": {
     "@sanity/client": "^7.6.0"
+  },
+  "devDependencies": {
+    "astro": "^5.9.1"
   }
 }
