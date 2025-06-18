@@ -88,7 +88,7 @@
   <div
     class:flex-1={isSearching}
     onfocusin={() => (isSearching = true)}
-    onblur={() => (isSearching = false)}
+    onfocusout={() => (isSearching = false)}
     class="h-16 flex flex-col overflow-clip justify-start text-primary px-4 rounded-lg bg-blue-300/20 dark:text-gray-200 backdrop-blur gap-2 transition-[flex] duration-300"
   >
     <div class="sticky top-0">
